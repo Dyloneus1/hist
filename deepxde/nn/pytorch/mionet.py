@@ -121,12 +121,12 @@ class MIONetCartesianProd(NN):
             )
         # output merger net
         if self.output_merger is None:
-            y = torch.einsum("ip,jp->ij", y_func, y_loc)
+            y = torch.einsum("ijp,ip->ij", y_loc, y_func)
         else:
             y_func = y_func[:, None, :]
             y_loc = y_loc[None, :]
             if self.output_merge_operation == "mul":
-                y = torch.mul(y_func, y_loc)
+                y = torch.mul(y_loc, y_func)
             elif self.output_merge_operation == "add":
                 y = y_func + y_loc
             elif self.output_merge_operation == "cat":
